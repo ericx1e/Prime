@@ -13,7 +13,8 @@ function Tile(r, c, v, s) {
 
     this.show = function () {
         colorMode(HSB)
-        fill(map(this.v, 0, maxValue, 255, 0), 255, 255)
+        hue = map(this.v, 0, maxValue, 255, 20)
+        fill(hue, 70, 90)
         if (primeSet.has(this.v)) {
             strokeWeight(this.s / 15)
             stroke(255)
@@ -21,6 +22,7 @@ function Tile(r, c, v, s) {
             noStroke()
         }
         rect(this.x, this.y, this.s, this.s, this.s / 5)
+        // fill((128 + hue) % 255, 255, 255)
         fill(255)
         noStroke()
         textFont(font)
