@@ -97,6 +97,10 @@ function touchEnded() {
     return
 }
 
+function touchMoved() { //prevent dragging the screen on mobile
+    return false;
+}
+
 function keyPressed() {
     if (keyCode == UP_ARROW) {
         up()
