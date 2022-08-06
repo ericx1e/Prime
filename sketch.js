@@ -7,6 +7,7 @@ const primeSet = new Set()
 let primeTxt
 let nextTile = 4
 let moved = false
+let score = 0
 
 function preload() {
     font = loadFont('roboto-mono/RobotoMono-Medium.ttf')
@@ -56,11 +57,14 @@ function draw() {
     }
 
 
+    score = 0
     for (let r = 0; r < 4; r++) {
         for (let c = 0; c < 4; c++) {
-            if (board[r][c]) {
-                board[r][c].show()
-                maxValue = Math.max(maxValue, board[r][c].v)
+            let cur = board[r][c]
+            if (cur) {
+                cur.show()
+                maxValue = Math.max(maxValue, cur.v)
+                score += cur.v * cur.v
             }
         }
     }
@@ -70,9 +74,11 @@ function draw() {
     if (width > height) {
         textSize(width / 30)
         text("next:\n" + nextTile, width / 7, height / 2)
+        text("score:\n" + score, width * 6 / 7, height / 2)
     } else {
         textSize(height / 35)
         text("next:\n" + nextTile, width / 2, height / 5)
+        text("score:\n" + score, width / 2, height * 4 / 5)
     }
 }
 
