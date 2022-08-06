@@ -22,7 +22,7 @@ function setup() {
 
     canvas = createCanvas(window.innerWidth, window.innerHeight)
     canvas.position(0, 0)
-    tileSize = width / 10
+    tileSize = Math.max(width, height) / 10
     gridSize = tileSize * 1.1
 
     for (let i = 0; i < 4; i++) {
@@ -35,7 +35,6 @@ function setup() {
 }
 
 function windowResized() {
-    console.log('what')
     canvas = createCanvas(window.innerWidth, window.innerHeight)
     canvas.position(0, 0)
     tileSize = Math.max(width, height) / 10
