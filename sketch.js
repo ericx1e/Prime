@@ -94,6 +94,7 @@ function touchEnded() {
         spawnRandomTile()
         moved = false
     }
+    return
 }
 
 function keyPressed() {
