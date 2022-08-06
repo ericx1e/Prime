@@ -13,12 +13,14 @@ function preload() {
     primeTxt = loadStrings("prime_list.txt")
 }
 
+let canvas
+
 function setup() {
     primeTxt.forEach(n => {
         primeSet.add(parseInt(n))
     });
 
-    let canvas = createCanvas(window.innerWidth, window.innerHeight)
+    canvas = createCanvas(window.innerWidth, window.innerHeight)
     canvas.position(0, 0)
     tileSize = width / 10
     gridSize = tileSize * 1.1
@@ -30,6 +32,14 @@ function setup() {
     for (let i = 0; i < 3; i++) {
         spawnRandomTile()
     }
+}
+
+function windowResized() {
+    console.log('what')
+    canvas = createCanvas(window.innerWidth, window.innerHeight)
+    canvas.position(0, 0)
+    tileSize = Math.max(width, height) / 10
+    gridSize = tileSize * 1.1
 }
 
 function draw() {
@@ -57,9 +67,14 @@ function draw() {
     }
 
     fill(255)
-    textSize(width / 30)
     textAlign(CENTER, CENTER)
-    text("next:\n" + nextTile, width / 7, height / 2)
+    if (width > height) {
+        textSize(width / 30)
+        text("next:\n" + nextTile, width / 7, height / 2)
+    } else {
+        textSize(height / 35)
+        text("next:\n" + nextTile, width / 2, height / 5)
+    }
 }
 
 let startX, startY
