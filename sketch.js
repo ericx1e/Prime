@@ -159,11 +159,11 @@ function spawnRandomTile() {
     let randI = parseInt(random(0, openR.length))
     // console.log(openR[randI], openC[randI])
     addNewTile(openR[randI], openC[randI], nextTile, tileSize / 2)
-    if (maxValue < 100) {
-        nextTile = parseInt(random(2, 10))
-    } else {
-        nextTile = parseInt(random(2, parseInt(Math.sqrt(maxValue))))
+    let v = parseInt(random(2, Math.max(parseInt(Math.pow(score, 0.25)), 10)))
+    if (v > 10 && v % 2 == 0) {
+        v++
     }
+    nextTile = v
 }
 
 function canCombine(a, b) {
