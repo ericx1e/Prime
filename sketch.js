@@ -139,8 +139,11 @@ function keyPressed() {
 }
 
 
-function addNewTile(r, c, v, s) {
+function addNewTile(r, c, v, s, combined) {
     let tile = new Tile(r, c, v, s)
+    if (combined) {
+        tile.combining = true
+    }
     board[r][c] = tile
 }
 
