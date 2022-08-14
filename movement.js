@@ -17,7 +17,7 @@ function up() {
                 board[r][c].r--
                 board[r - 1][c] = board[r][c]
                 board[r][c] = undefined
-                moved = true
+                moved = 'up'
             }
         }
     }
@@ -42,7 +42,7 @@ function right() {
                 board[r][c].c++
                 board[r][c + 1] = board[r][c]
                 board[r][c] = undefined
-                moved = true
+                moved = 'right'
             }
         }
     }
@@ -67,7 +67,7 @@ function down() {
                 board[r][c].r++
                 board[r + 1][c] = board[r][c]
                 board[r][c] = undefined
-                moved = true
+                moved = 'down'
             }
         }
     }
@@ -92,7 +92,7 @@ function left() {
                 board[r][c].c--
                 board[r][c - 1] = board[r][c]
                 board[r][c] = undefined
-                moved = true
+                moved = 'left'
             }
         }
     }

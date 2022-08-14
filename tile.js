@@ -1,4 +1,5 @@
 let lerpSpeed = 0.35
+let gravity = 0.5
 
 function Tile(r, c, v, s) {
     this.r = r
@@ -8,6 +9,10 @@ function Tile(r, c, v, s) {
     this.x = width / 2 - 1.5 * gridSize + c * gridSize
     this.y = height / 2 - 1.5 * gridSize + r * gridSize
     this.combining = false;
+    this.xv = random(-2, 2)
+    this.yv = random(-3, -10)
+    this.delay = parseInt(random(60, 180))
+
     if (s) {
         this.s = s
     } else {
@@ -40,11 +45,27 @@ function Tile(r, c, v, s) {
             textSize(this.s / 3)
         }
         text(v, this.x, this.y)
-
-        this.x = lerp(this.x, width / 2 - 1.5 * gridSize + this.c * gridSize, lerpSpeed)
-        this.y = lerp(this.y, height / 2 - 1.5 * gridSize + this.r * gridSize, lerpSpeed)
-
         this.s = lerp(this.s, tileSize, lerpSpeed)
+
+        if (!gameover) {
+            this.x = lerp(this.x, width / 2 - 1.5 * gridSize + this.c * gridSize, lerpSpeed)
+            this.y = lerp(this.y, height / 2 - 1.5 * gridSize + this.r * gridSize, lerpSpeed)
+        } else {
+            if (this.delay > 0) {
+                this.x = lerp(this.x, width / 2 - 1.5 * gridSize + this.c * gridSize, lerpSpeed)
+                this.y = lerp(this.y, height / 2 - 1.5 * gridSize + this.r * gridSize, lerpSpeed)
+                this.delay--
+                return
+            }
+            if (this.combining) {
+                this.x = width / 2 - 1.5 * gridSize + this.c * gridSize
+                this.y = height / 2 - 1.5 * gridSize + this.r * gridSize
+                this.combining = false
+            }
+            this.x += this.xv
+            this.y += this.yv
+            this.yv += gravity
+        }
     }
 }
 

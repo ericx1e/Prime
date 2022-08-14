@@ -8,6 +8,7 @@ let primeTxt
 let nextTile = 4
 let moved = false
 let score = 0
+let gameover = false
 
 function preload() {
     font = loadFont('roboto-mono/RobotoMono-Medium.ttf')
@@ -56,6 +57,19 @@ function draw() {
         }
     }
 
+    loseText = "GAMEOVERGAMEOVER"
+    if (gameover) {
+        fill(0)
+        noStroke()
+        textFont(font)
+        textAlign(CENTER, CENTER)
+        for (let r = 0; r < 4; r++) {
+            for (let c = 0; c < 4; c++) {
+                text(loseText.charAt(r * 4 + c), width / 2 - 1.5 * gridSize + c * gridSize, height / 2 - 1.5 * gridSize + r * gridSize)
+            }
+        }
+    }
+
 
     score = 0
     for (let r = 0; r < 4; r++) {
@@ -68,6 +82,7 @@ function draw() {
             }
         }
     }
+    score = parseInt(Math.sqrt(score))
 
     fill(255)
     textAlign(CENTER, CENTER)
@@ -111,7 +126,7 @@ function touchEnded() {
     }
 
     if (moved) {
-        spawnRandomTile()
+        spawnRandomTile(moved)
         moved = false
     }
     return
@@ -133,7 +148,7 @@ function keyPressed() {
     }
 
     if (moved) {
-        spawnRandomTile()
+        spawnRandomTile(moved)
         moved = false
     }
 }
@@ -147,9 +162,11 @@ function addNewTile(r, c, v, s, combined) {
     board[r][c] = tile
 }
 
-function spawnRandomTile() {
+function spawnRandomTile(dir) {
     let openR = []
     let openC = []
+    let finalR
+    let finalC
     for (let r = 0; r < 4; r++) {
         for (let c = 0; c < 4; c++) {
             if (!board[r][c]) {
@@ -159,11 +176,44 @@ function spawnRandomTile() {
         }
     }
 
-    let randI = parseInt(random(0, openR.length))
-    // console.log(openR[randI], openC[randI])
-    addNewTile(openR[randI], openC[randI], nextTile, tileSize / 2)
-    let v = parseInt(random(2, Math.max(parseInt(Math.pow(score, 0.25)), 10)))
-    if (v > 10 && v % 2 == 0) {
+    if (dir) {
+        let randI
+        switch (dir) {
+            case 'up':
+                indices = findAllIndices(openR, 3)
+                randI = indices[parseInt(random(0, indices.length))]
+                finalR = 3
+                finalC = openC[randI]
+                break
+            case 'right':
+                indices = findAllIndices(openC, 0)
+                randI = indices[parseInt(random(0, indices.length))]
+                finalR = openR[randI]
+                finalC = 0
+                break
+            case 'down':
+                indices = findAllIndices(openR, 0)
+                randI = indices[parseInt(random(0, indices.length))]
+                finalR = 0
+                finalC = openC[randI]
+                break
+            case 'left':
+                indices = findAllIndices(openC, 3)
+                randI = indices[parseInt(random(0, indices.length))]
+                finalR = openR[randI]
+                finalC = 3
+                break
+        }
+    } else {
+        let randI = parseInt(random(0, openR.length))
+        // console.log(openR[randI], openC[randI])
+        finalR = openR[randI]
+        finalC = openC[randI]
+    }
+    addNewTile(finalR, finalC, nextTile, tileSize / 2)
+    gameover = checkLose()
+    let v = parseInt(random(2, Math.max(parseInt(Math.pow(score, 0.5)), 10)))
+    if (v > 9 && v % 2 == 0) {
         v++
     }
     nextTile = v
@@ -171,4 +221,38 @@ function spawnRandomTile() {
 
 function canCombine(a, b) {
     return a == b || primeSet.has(a) || primeSet.has(b)
+}
+
+function findAllIndices(array, element) {
+    result = []
+    let i = array.indexOf(element)
+    while (i != -1) {
+        result.push(i)
+        i = array.indexOf(element, i + 1)
+    }
+
+    return result
+}
+
+function checkLose() {
+    for (let r = 0; r < 4; r++) {
+        for (let c = 0; c < 4; c++) {
+            if (!board[r][c]) {
+                return false
+            }
+            if (r > 0 && board[r - 1][c] && canCombine(board[r][c].v, board[r - 1][c].v)) {
+                return false
+            }
+            if (r < 3 && board[r + 1][c] && canCombine(board[r][c].v, board[r + 1][c].v)) {
+                return false
+            }
+            if (c > 0 && board[r][c - 1] && canCombine(board[r][c].v, board[r][c - 1].v)) {
+                return false
+            }
+            if (c < 3 && board[r][c + 1] && canCombine(board[r][c].v, board[r][c + 1].v)) {
+                return false
+            }
+        }
+    }
+    return true
 }
