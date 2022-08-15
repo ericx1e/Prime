@@ -9,6 +9,7 @@ let nextTile = 4
 let moved = false
 let score = 0
 let gameover = false
+let sum = 0
 
 function preload() {
     font = loadFont('roboto-mono/RobotoMono-Medium.ttf')
@@ -72,6 +73,7 @@ function draw() {
 
 
     score = 0
+    sum = 0
     for (let r = 0; r < 4; r++) {
         for (let c = 0; c < 4; c++) {
             let cur = board[r][c]
@@ -79,6 +81,7 @@ function draw() {
                 cur.show()
                 maxValue = Math.max(maxValue, cur.v)
                 score += cur.v * cur.v
+                sum += cur.v
             }
         }
     }
@@ -212,7 +215,8 @@ function spawnRandomTile(dir) {
     }
     addNewTile(finalR, finalC, nextTile, tileSize / 2)
     gameover = checkLose()
-    let v = parseInt(random(2, Math.max(parseInt(Math.pow(score, 0.5)), 10)))
+    // console.log(Math.pow(sum, 0.5))
+    let v = parseInt(random(2, Math.max(parseInt(Math.pow(sum, 0.5)), 10)))
     if (v > 9 && v % 2 == 0) {
         v++
     }
