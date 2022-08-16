@@ -44,6 +44,20 @@ function windowResized() {
     gridSize = tileSize * 1.1
 }
 
+function reset() {
+    gameover = false
+    for (let i = 0; i < 4; i++) {
+        board[i] = []
+    }
+
+    nextTile = 4
+    score = 0
+    sum = 0
+    for (let i = 0; i < 3; i++) {
+        spawnRandomTile()
+    }
+}
+
 function draw() {
     colorMode(RGB)
     background(51)
@@ -58,14 +72,31 @@ function draw() {
         }
     }
 
-    loseText = "GAMEOVERGAMEOVER"
+    loseText = "LOSEPLAYAGAIN?OK"
     if (gameover) {
-        fill(0)
         noStroke()
         textFont(font)
         textAlign(CENTER, CENTER)
         for (let r = 0; r < 4; r++) {
             for (let c = 0; c < 4; c++) {
+                if (r == 3 && (c == 2 || c == 3)) {
+                    if (mouseTouchingGridAt(r, c)) {
+                        if (mouseIsPressed) {
+                            reset()
+                        }
+                        fill(20, 230, 40, 100)
+                    } else {
+                        fill(50, 250, 70, 100)
+                    }
+                    rect(width / 2 - 1.5 * gridSize + c * gridSize, height / 2 - 1.5 * gridSize + r * gridSize, tileSize, tileSize, tileSize / 5)
+                    if (mouseTouchingGridAt(r, c)) {
+                        fill(20, 170, 40)
+                    } else {
+                        fill(50, 200, 70)
+                    }
+                } else {
+                    fill(0)
+                }
                 text(loseText.charAt(r * 4 + c), width / 2 - 1.5 * gridSize + c * gridSize, height / 2 - 1.5 * gridSize + r * gridSize)
             }
         }
@@ -98,6 +129,12 @@ function draw() {
         text("next:\n" + nextTile, width / 2, height / 5)
         text("score:\n" + score, width / 2, height * 4 / 5)
     }
+}
+
+function mouseTouchingGridAt(r, c) {
+    let x = width / 2 - 1.5 * gridSize + c * gridSize
+    let y = height / 2 - 1.5 * gridSize + r * gridSize
+    return mouseX > x - tileSize / 2 && mouseX < x + tileSize / 2 && mouseY > y - tileSize / 2 && mouseY < y + tileSize / 2
 }
 
 let startX, startY
