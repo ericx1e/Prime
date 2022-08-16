@@ -253,8 +253,8 @@ function spawnRandomTile(dir) {
     }
     addNewTile(finalR, finalC, nextTile, tileSize / 2)
     gameover = checkLose()
-    // console.log(Math.pow(sum, 0.5))
-    let v = parseInt(random(2, Math.max(parseInt(Math.pow(sum, 0.5)), 10)))
+    // console.log(parseInt(Math.pow(sum, 0.4)), parseInt(Math.pow(sum, 0.5)))
+    let v = parseInt(random(2, Math.max(parseInt(Math.pow(sum, 0.4)), 10)))
     if (v > 9 && v % 2 == 0) {
         v++
     }
