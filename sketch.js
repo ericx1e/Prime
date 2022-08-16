@@ -53,6 +53,7 @@ function reset() {
     nextTile = 4
     score = 0
     sum = 0
+    maxValue = 0
     for (let i = 0; i < 3; i++) {
         spawnRandomTile()
     }
