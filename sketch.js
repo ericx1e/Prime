@@ -10,6 +10,8 @@ let moved = false
 let score = 0
 let gameover = false
 let sum = 0
+let popup
+let buttons
 
 function preload() {
     font = loadFont('roboto-mono/RobotoMono-Medium.ttf')
@@ -21,7 +23,7 @@ let canvas
 function setup() {
     primeTxt.forEach(n => {
         primeSet.add(parseInt(n))
-    });
+    })
 
     canvas = createCanvas(window.innerWidth, window.innerHeight)
     canvas.position(0, 0)
@@ -35,6 +37,11 @@ function setup() {
     for (let i = 0; i < 3; i++) {
         spawnRandomTile()
     }
+
+    // popup = new Popup("tutorial")
+
+    buttons = []
+    buttons.push(new Button(tileSize * 0.7, height - tileSize * 0.7, tileSize, "tutorial"))
 }
 
 function windowResized() {
@@ -42,6 +49,9 @@ function windowResized() {
     canvas.position(0, 0)
     tileSize = Math.max(width, height) / 10
     gridSize = tileSize * 1.1
+
+    buttons = []
+    buttons.push(new Button(tileSize * 0.7, height - tileSize * 0.7, tileSize, "tutorial"))
 }
 
 function reset() {
@@ -130,6 +140,14 @@ function draw() {
         text("next:\n" + nextTile, width / 2, height / 5)
         text("score:\n" + score, width / 2, height * 4 / 5)
     }
+
+    buttons.forEach(button => {
+        button.show()
+    })
+
+    if (popup) {
+        popup.show()
+    }
 }
 
 function mouseTouchingGridAt(r, c) {
@@ -142,12 +160,30 @@ let startX, startY
 let moveTheshold = 30
 
 function touchStarted() {
+    if (popup) {
+        popup.onClick()
+        return
+    }
+
+    for (let i = 0; i < buttons.length; i++) {
+        button = buttons[i]
+        if (button.touchingMouse()) {
+            button.onClick()
+            startX = undefined
+            startY = undefined
+            return
+        }
+    }
+
     startX = mouseX
     startY = mouseY
     return
 }
 
 function touchEnded() {
+    if (popup) {
+        return
+    }
     dx = mouseX - startX
     dy = mouseY - startY
     if (dx * dx + dy * dy > moveTheshold * moveTheshold) {
@@ -178,6 +214,10 @@ function touchMoved() { //prevent dragging the screen on mobile
 }
 
 function keyPressed() {
+    if (popup) {
+        return
+    }
+
     if (keyCode == UP_ARROW) {
         up()
     } else if (keyCode == RIGHT_ARROW) {
