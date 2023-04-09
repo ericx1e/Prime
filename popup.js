@@ -17,7 +17,7 @@ function Popup(id) {
 
     this.show = function () {
         colorMode(RGB)
-        fill(120, this.oppacity)
+        fill(20, this.oppacity)
         rect(this.x, this.y, this.w, this.h, this.w / 25)
         if (this.closing) {
             this.w = lerp(this.w, startingW, popupLerpSpeed)
@@ -39,11 +39,11 @@ function Popup(id) {
         let tx
         switch (id) {
             case "tutorial":
-                tx = "swipe or use arrow keys to shift every tile\n\ncomposite numbers combine with the same number tile\n\nprime numbers combine with any number\n\neach move spawns a tile on the opposite side\n\ndon't let the board fill up!\n\n\n\nclick anywhere to play"
+                tx = "• swipe or use arrow keys to shift every tile\n\n• composite numbers combine with the same number tile\n\n• prime numbers combine with any number\n\n• each move spawns a tile on the opposite side\n\n• don't let the board fill up!\n\n\n\nclick anywhere to play\n\nMade by Eric Xie"
                 console.log(tx)
                 break
         }
-        fill(255, this.oppacity)
+        fill(255, this.oppacity * 2)
         textSize(this.w / 40)
         textWrap(WORD)
         textAlign(CENTER, TOP)
