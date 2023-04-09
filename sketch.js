@@ -13,6 +13,9 @@ let sum = 0
 let popup
 let buttons
 
+const shadowN = 7
+let shadowTransform = { x: 0, y: 0 }
+
 function preload() {
     font = loadFont('roboto-mono/RobotoMono-Medium.ttf')
     primeTxt = loadStrings("prime_list.txt")
@@ -29,6 +32,7 @@ function setup() {
     canvas.position(0, 0)
     tileSize = Math.max(width, height) / 10
     gridSize = tileSize * 1.1
+    shadowTransform = { x: gridSize / 100, y: gridSize / 100 }
 
     for (let i = 0; i < 4; i++) {
         board[i] = []
@@ -73,6 +77,10 @@ function draw() {
     colorMode(RGB)
     background(51)
     rectMode(CENTER)
+    fill(120)
+    for (let i = 0; i < shadowN; i++) {
+        rect(width / 2 + i * shadowTransform.x, height / 2 + i * shadowTransform.y, gridSize * 4, gridSize * 4, gridSize / 5)
+    }
     fill(150)
     rect(width / 2, height / 2, gridSize * 4, gridSize * 4, gridSize / 5)
     for (let r = 0; r < 4; r++) {

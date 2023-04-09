@@ -12,6 +12,8 @@ function Popup(id) {
     this.oppacity = 0
     this.closing = false
     this.closingStartFrame
+    this.openingStartFrame = frameCount
+    this.opening = true
 
     this.show = function () {
         colorMode(RGB)
@@ -30,6 +32,10 @@ function Popup(id) {
             this.oppacity = lerp(this.oppacity, 200, popupLerpSpeed)
         }
 
+        if (this.opening && frameCount - this.openingStartFrame > popupLerpSpeed * 60) {
+            this.opening = false
+        }
+
         let tx
         switch (id) {
             case "tutorial":
@@ -45,6 +51,7 @@ function Popup(id) {
     }
 
     this.onClick = function () {
+        if (this.opening) return
         switch (id) {
             case "tutorial":
                 if (!this.closing) {
