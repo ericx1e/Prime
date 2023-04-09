@@ -76,6 +76,7 @@ function reset() {
 function draw() {
     colorMode(RGB)
     background(51)
+    textFont(font)
     rectMode(CENTER)
     fill(120)
     for (let i = 0; i < shadowN; i++) {
@@ -94,7 +95,6 @@ function draw() {
     loseText = "LOSEPLAYAGAIN?OK"
     if (gameover) {
         noStroke()
-        textFont(font)
         textAlign(CENTER, CENTER)
         for (let r = 0; r < 4; r++) {
             for (let c = 0; c < 4; c++) {
@@ -169,6 +169,16 @@ let moveTheshold = 30
 
 function touchStarted() {
     if (popup) {
+        return
+    }
+
+    startX = mouseX
+    startY = mouseY
+    return
+}
+
+function touchEnded() {
+    if (popup) {
         popup.onClick()
         return
     }
@@ -183,15 +193,6 @@ function touchStarted() {
         }
     }
 
-    startX = mouseX
-    startY = mouseY
-    return
-}
-
-function touchEnded() {
-    if (popup) {
-        return
-    }
     dx = mouseX - startX
     dy = mouseY - startY
     if (dx * dx + dy * dy > moveTheshold * moveTheshold) {
